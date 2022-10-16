@@ -1,6 +1,8 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
-import { nanoid } from 'nanoid'
+import { nanoid } from 'nanoid';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { Container } from './Container/Container'
 import { Section } from './Section/Section'
@@ -18,28 +20,22 @@ export class App extends Component {
 
 
   componentDidMount() {
-    console.log(App);
-    
     const contactEl = localStorage.getItem('contact');
     const parsContacts = JSON.parse(contactEl);
 
-  if (parsContacts) {
-    this.setState({ contacts: parsContacts });
-  }
-
-    console.log(parsContacts);
+    if (parsContacts) {
+      this.setState({ contacts: parsContacts });
+    };
   }
 
 
   componentDidUpdate(prevProps, prevState) {
-    console.log('app');
 
     if (this.state.contacts !== prevState.contacts) {
       localStorage.setItem('contact', JSON.stringify(this.state.contacts));
     }
   }
   
-
 
   addContacts = ({name, number}) => {
     const { contacts } = this.state;
@@ -50,19 +46,11 @@ export class App extends Component {
       number,
     };
 
-    for (const contact of contacts) {
-
-      if (contact.name === name) {
-        alert(`${name} is already in contact`);
-
-        return;
-      }
-    }
-
-    this.setState(prevState => ({
-      contacts: [contactObj, ...prevState.contacts],
-    }));
+    contacts.some(currentName => currentName.name === name)
+      ? toast.warn(`${name} is already in contact`)
+      : this.setState(prevState => ({contacts: [contactObj, ...prevState.contacts]}));
   };
+
 
   deleteContact = contactId => {
     this.setState(prevState => ({
@@ -92,6 +80,11 @@ export class App extends Component {
             <Filter value={this.state.filter} onFilterChange={this.changeFilter} />
             <ContactList contacts={contactList} onDeleteContact={this.deleteContact} />
           </Wrapper>
+          <ToastContainer
+            position="top-center"
+            autoClose={2000}
+            draggable
+          />
         </Section>
       </Container>
     );

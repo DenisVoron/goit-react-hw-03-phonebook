@@ -38,6 +38,7 @@
     ]
   },
   "devDependencies": {
+    "react-toastify": "^9.0.8",
     "styled-components": "^5.3.6"
   }
 }

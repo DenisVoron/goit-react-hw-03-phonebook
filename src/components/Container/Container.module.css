@@ -1,4 +1,6 @@
 .container {
+    height: 700px;
+
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -7,4 +9,6 @@
     padding-left: 15px;
     padding-right: 15px;
     padding-bottom: 20px;
+
+    background-color: bisque;
 }
